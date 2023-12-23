@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import axios from "axios";
+import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 const OrderSummary = () => {
   const retrievedValues = {
@@ -11,14 +11,16 @@ const OrderSummary = () => {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    axios
-      .post("https://summary-server-v1.vercel.app/api/v1/summary/addsummary", retrievedValues, {
-        headers: { "Content-Type": "application/json" },
-      })
+    Axios.post("https://summary-server-v1.vercel.app/api/v1/summary/addsummary", retrievedValues, {
+      headers: { "Content-Type": "application/json" },
+    })
       .then((res) => {
         if (res.status === 200) {
-          localStorage.clear();
           alert("Your Order is Accepted");
+          const removeData = ["canvas", "painting", "date", "image"];
+          removeData.forEach((data) => {
+            localStorage.removeItem(data);
+          });
           navigate("/");
         } else {
           alert(res.status);
